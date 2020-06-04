@@ -1,5 +1,5 @@
 # This file was edited by rollout.io
-# URL: https://app.rollout.io/ex/5d7128270093ea2f0d207abd
+# URL: https://app.rollout.io/ex/5da77735fc53991b2d910159
 type: experiment
 name: header color
 flag: default.headerColor
@@ -8,8 +8,10 @@ availableValues:
   - is-primary
   - is-dark
 conditions:
-  - property:
-      name: isLoggedIn
-      operator: is-true
+  - group:
+      name: isBetaUser
+    value: is-primary
+  - group:
+      name: isLoggedInUser
     value: is-white
-value: is-primary
+value: is-dark
