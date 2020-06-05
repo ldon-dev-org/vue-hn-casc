@@ -3,5 +3,6 @@
 type: experiment
 name: db name
 flag: default.dbName
-availableValues: []
-value: []
+availableValues:
+  - test
+value: test
