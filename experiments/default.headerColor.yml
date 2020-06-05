@@ -4,6 +4,13 @@ type: experiment
 name: header color
 flag: default.headerColor
 availableValues:
-  - is-white
   - is-primary
-value: []
+  - is-white
+  - is-dark
+conditions:
+  - value: is-primary
+  - dependency:
+      flag: default.score
+      value: 'true'
+    value: is-white
+value: is-dark
