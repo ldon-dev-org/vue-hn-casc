@@ -1,0 +1,9 @@
+# This file was edited by rollout.io
+# URL: https://app.rollout.io/ex/5eda644e2820b741996898b9
+type: experiment
+name: header color
+flag: default.headerColor
+availableValues:
+  - is-white
+  - is-primary
+value: []
