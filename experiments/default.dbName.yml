@@ -1,0 +1,8 @@
+# This file was edited by rollout.io
+# URL: https://app.rollout.io/ex/5edea4fe866236a31a8d9561
+type: experiment
+name: db name
+flag: default.dbName
+availableValues:
+  - HN_OE
+value: []
