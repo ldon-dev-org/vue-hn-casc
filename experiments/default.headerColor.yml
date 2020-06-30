@@ -13,3 +13,4 @@ conditions:
   - group:
       name: Logged In User
     value: is-white
+value: is-dark
