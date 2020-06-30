@@ -1,7 +1,0 @@
-type: target-group
-name: isBetaUser
-conditions:
-  - operator: is-true
-    property: isLoggedIn
-  - operator: is-true
-    property: isBetaUser
