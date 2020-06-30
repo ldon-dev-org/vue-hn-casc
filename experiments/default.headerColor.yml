@@ -3,5 +3,13 @@ type: experiment
 name: header color
 flag: default.headerColor
 availableValues:
-  - is-white
   - is-primary
+  - is-white
+  - is-dark
+conditions:
+  - group:
+      name: Beta User
+    value: is-primary
+  - group:
+      name: Logged In User
+    value: is-white
