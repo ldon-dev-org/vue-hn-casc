@@ -3,5 +3,10 @@ type: experiment
 name: score
 flag: default.score
 conditions:
-  - value: true
+  - property:
+      name: Country
+      operator: in-array
+      operand:
+        - Canada
+    value: true
 value: false
