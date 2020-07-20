@@ -2,4 +2,11 @@
 type: experiment
 name: score
 flag: default.score
-value: false
+conditions:
+  - property:
+      name: isBetaUser
+      operator: is-true
+    value: true
+value:
+  - percentage: 50
+    option: true
