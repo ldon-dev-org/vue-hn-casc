@@ -5,5 +5,7 @@ flag: default.scoreMigration
 conditions:
   - group:
       name: Beta User
-    value: true
+    value:
+      - percentage: 10
+        option: true
 value: false
