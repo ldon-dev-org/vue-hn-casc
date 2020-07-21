@@ -2,4 +2,4 @@
 type: experiment
 name: score migration
 flag: default.scoreMigration
-value: false
+value: true
