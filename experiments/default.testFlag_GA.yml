@@ -2,4 +2,8 @@
 type: experiment
 name: test flag ga
 flag: default.testFlag_GA
+conditions:
+  - group:
+      name: Beta User
+    value: true
 value: false
