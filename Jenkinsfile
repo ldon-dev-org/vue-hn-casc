@@ -12,6 +12,11 @@ pipeline {
   stages('Automatic Canary Deployment')
   {
     stage('Deployment Phase Check'){
+       agent {
+        kubernetes {
+          label 'nodejs'
+          yaml testPodYaml
+       }
       steps {
         checkout scm
         echo("${env.GIT_COMMIT}")
