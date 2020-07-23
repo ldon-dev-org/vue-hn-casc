@@ -6,5 +6,5 @@ flag: default.testFlag_GA
 conditions:
   - group:
       name: Beta User
-    value: false
+    value: true
 value: false
