@@ -23,7 +23,7 @@ pipeline {
         checkout scm
         script{
           changedFile = sh (script:"git diff-tree --no-commit-id --name-only -r ${env.GIT_COMMIT}", returnStdout: true)
-          echo(changledFile)
+          echo(changedFile)
         }
       }
     }
