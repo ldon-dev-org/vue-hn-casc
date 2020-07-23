@@ -21,7 +21,9 @@ pipeline {
       }
       steps {
         checkout scm
-        echo("${env.GIT_COMMIT}")
+        script{
+         sh "git show ${env.GIT_COMMIT}"
+        }
       }
     }
     stage('Automated Testing Kickoff'){
