@@ -7,6 +7,7 @@ pipeline {
     preserveStashes(buildCount: 10)
   }
   environment {
+    phase = "Beginning"
   }
   stages('Automatic Canary Deployment')
   {
