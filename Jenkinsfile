@@ -16,7 +16,8 @@ pipeline {
         kubernetes {
           label 'nodejs'
           yaml testPodYaml
-       }
+        }
+      }
       steps {
         checkout scm
         echo("${env.GIT_COMMIT}")
