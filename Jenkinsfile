@@ -22,7 +22,7 @@ pipeline {
       steps {
         checkout scm
         script{
-         sh "git show ${env.GIT_COMMIT}"
+         sh "git diff-tree --no-commit-id --name-only -r ${env.GIT_COMMIT}"
         }
       }
     }
