@@ -1,4 +1,5 @@
 @Library('cb-days@master') _
+def testPodYaml = libraryResource 'podtemplates/vuejs/vuejs-test-pod.yml'
 pipeline {
   agent none
   options { 
