@@ -12,22 +12,22 @@ pipeline {
   {
     stage('Deployment Phase Check'){
       steps {
-        echo("Hello!")
+        echo("Hello 1")
       }
     }
     stage('Automated Testing Kickoff'){
       steps {
-        echo("Hello!")
+        echo("Hello 2")
       }
     }
     stage('Canary scale up'){
       steps {
-        echo("Hello!")
+        echo("Hello 3")
       }
     }
     stage('Canary scale down'){
       steps {
-        echo("Hello!")
+        echo("Hello 4")
       }
     }
   }
