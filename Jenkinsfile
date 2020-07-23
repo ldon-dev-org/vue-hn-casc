@@ -13,6 +13,7 @@ pipeline {
   {
     stage('Deployment Phase Check'){
       steps {
+        checkout scm
         echo("${env.GIT_COMMIT}")
       }
     }
