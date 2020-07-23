@@ -13,7 +13,7 @@ pipeline {
   {
     stage('Deployment Phase Check'){
       steps {
-        echo("Hello 1")
+        echo("${GIT_COMMIT}")
       }
     }
     stage('Automated Testing Kickoff'){
