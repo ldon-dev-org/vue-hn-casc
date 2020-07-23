@@ -26,8 +26,9 @@ pipeline {
           echo(changedFile)
           experimentFile = changedFile.contains("experiments/")
           if(experimentFile){
-           echo "Updated experiment!" 
-            experimentYaml = readYaml (file: "${changedFile}")
+            experimentText = sh (script:"cat ${changedFile}", returnStdout: true)
+           sh "cat ${changedFile}"
+            experimentYaml = readYaml (text: "$experimentText")
             echo experimentYaml.labels.toString()
           }
           else{
