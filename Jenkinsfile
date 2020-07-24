@@ -29,7 +29,13 @@ pipeline {
             experimentText = sh (script:"cat ${changedFile}", returnStdout: true)
            sh "cat ${changedFile}"
             experimentYaml = readYaml (text: "$experimentText")
-            echo experimentYaml.labels.toString()
+            canaryBool = experimentYaml.labels.contains("Canary-deploy")
+            if(canaryBool){
+             echo "Canary deploy!" 
+            }
+            else{
+             echo "No canary!" 
+            }
           }
           else{
            echo "Updated a not experiment!" 
