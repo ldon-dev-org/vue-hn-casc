@@ -6,5 +6,5 @@ flag: default.scoreMigration
 conditions:
   - group:
       name: Internal-Testing
-    value: false
+    value: true
 value: false
