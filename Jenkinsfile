@@ -46,7 +46,7 @@ pipeline {
                   }
                   else if(experimentYaml.conditions.group.name){
                     echo experimentYaml.conditions.group.name.toString()
-                    if(experimentYaml.conditions.group.name.contains("Internal Testing"){
+                    if(experimentYaml.conditions.group.name.contains("Internal Testing")){
                       echo "Got internal testing"
                       canaryPhase = "internalTesting"
                     }
