@@ -5,8 +5,6 @@ labels: Canary-deploy
 flag: default.scoreMigration
 conditions:
   - group:
-      name:
-        - Internal-Testing
-        - Beta User
+      name: Internal-Testing
     value: true
 value: false
