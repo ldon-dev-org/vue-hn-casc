@@ -5,7 +5,7 @@ labels: Canary-deploy
 flag: default.articleDisplay
 conditions:
   - group:
-      name: Internal Testing
+      name: Internal-Testing
     value: true
   - value:
       - percentage: 5
