@@ -59,8 +59,8 @@ pipeline {
                   echo experimentYaml.value.toString()
                   canaryPhase = "fullyFalse"
                 }
+                echo "$canaryPhase"
               }
-              echo "$canaryPhase"
               else{
                echo "No canary!" 
               }
