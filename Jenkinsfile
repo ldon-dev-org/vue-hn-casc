@@ -12,7 +12,7 @@ pipeline {
     //1. Flag completely off
     //2. Flag turned on for internal testing
     //3. Flag turned on for internal testing + % subset of end users
-    canaryPhase = "Off"
+    canaryPhase = "fullyFalse"
   }
   stages('Automatic Canary Deployment')
   {
@@ -39,7 +39,24 @@ pipeline {
               canaryBool = experimentYaml.labels.contains("Canary-deploy")
               if(canaryBool){
                 //If it is labeled for a canary deployment, figure out which deployment phase we're in
-               echo "Canary deploy!" 
+                if(experimentYaml.conditions){
+                  if(experimentYaml.conditions.value.percentage){
+                    echo experimentYaml.conditions.value.percentage.toString()
+                    canaryPhase = "percentageDeploy"
+                  }
+                  else if(experimentYaml.conditions.group.name){
+                    echo experimentYaml.conditions.group.name.toString()
+                    if(experimentYaml.conditions.group.name.contains("Internal Testing"){
+                      echo "Got internal testing"
+                      canaryPhase = "internalTesting"
+                    }
+                  }
+                }
+                //If there are no additional conditions in the ruleset, check if flag is fully on or fully off
+                else{
+                  echo experimentYaml.value.toString()
+                  canaryPhase = "fullyFalse"
+                }
               }
               else{
                echo "No canary!" 
