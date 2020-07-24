@@ -43,17 +43,11 @@ pipeline {
                   groupBool = false
                   if(experimentYaml.conditions.group.name){
                     groupBool = true
-                    echo experimentYaml.conditions.group.name.toString()
                     targetGroupBool = experimentYaml.conditions.group.name.contains("Internal-Testing")
                     if(targetGroupBool){
-                      echo "Got internal testing"
                       canaryPhase = "internalTesting"
                     }
                   }
-                  echo experimentYaml.conditions.value.toString()
-                  echo "Group?" 
-                  echo groupBool.toString()
-                  echo experimentYaml.conditions.size().toString()
                   if(!(groupBool && experimentYaml.conditions.size() == 1)) {
                     if(experimentYaml.conditions[-1].value.percentage){
                       echo experimentYaml.conditions[-1].value.percentage.toString()
@@ -63,7 +57,6 @@ pipeline {
                 }
                 //If there are no additional conditions in the ruleset, check if flag is fully on or fully off
                 else{
-                  echo experimentYaml.value.toString()
                   canaryPhase = "fullyFalse"
                 }
                 echo "$canaryPhase"
