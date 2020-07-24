@@ -3,8 +3,8 @@ type: experiment
 name: score
 flag: default.score
 conditions:
-  - dependency:
-      flag: default.testFlag_GA
-      value: 'true'
+  - property:
+      name: isBetaUser
+      operator: is-true
     value: true
 value: false
