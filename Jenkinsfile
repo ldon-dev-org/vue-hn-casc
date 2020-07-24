@@ -49,8 +49,8 @@ pipeline {
                     }
                   }
                   echo experimentYaml.conditions.value.toString()
-                    if(experimentYaml.conditions.value.percentage){
-                      echo experimentYaml.conditions.value.percentage.toString()
+                    if(experimentYaml.conditions[-1].value.percentage){
+                      echo experimentYaml.conditions[-1].value.percentage.toString()
                       canaryPhase = "percentageDeploy"
                     }
                 }
@@ -60,6 +60,7 @@ pipeline {
                   canaryPhase = "fullyFalse"
                 }
               }
+              echo "$canaryPhase"
               else{
                echo "No canary!" 
               }
