@@ -6,4 +6,7 @@ conditions:
   - group:
       name: Beta User
     value: true
+  - value:
+      - percentage: 5
+        option: true
 value: false
