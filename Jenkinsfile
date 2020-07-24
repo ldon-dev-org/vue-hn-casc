@@ -40,17 +40,14 @@ pipeline {
               if(canaryBool){
                 //If it is labeled for a canary deployment, figure out which deployment phase we're in
                 if(experimentYaml.conditions){
-                  if(experimentYaml.conditions.value.percentage){
-                    echo experimentYaml.conditions.value.percentage.toString()
-                    canaryPhase = "percentageDeploy"
-                  }
-                  else if(experimentYaml.conditions.group.name){
+                  if(experimentYaml.conditions.group.name){
                     echo experimentYaml.conditions.group.name.toString()
                     if(experimentYaml.conditions.group.name.contains("Internal Testing")){
                       echo "Got internal testing"
                       canaryPhase = "internalTesting"
                     }
                   }
+                  echo experimentYaml.conditions.value.toString()
                 }
                 //If there are no additional conditions in the ruleset, check if flag is fully on or fully off
                 else{
