@@ -26,6 +26,7 @@ pipeline {
       steps {
         checkout scm
         script{
+          //Check if latest commit is an experiment + is labeled for canary deployment
           changedFile = sh (script:"git diff-tree --no-commit-id --name-only -r ${env.GIT_COMMIT}", returnStdout: true)
           echo(changedFile)
           experimentFile = changedFile.contains("experiments/")
@@ -37,6 +38,7 @@ pipeline {
             {
               canaryBool = experimentYaml.labels.contains("Canary-deploy")
               if(canaryBool){
+                //If it is labeled for a canary deployment, figure out which deployment phase we're in
                echo "Canary deploy!" 
               }
               else{
