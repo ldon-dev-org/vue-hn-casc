@@ -2,4 +2,6 @@
 type: experiment
 name: test flag ga
 flag: default.testFlag_GA
+conditions:
+  - value: true
 value: false
