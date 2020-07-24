@@ -53,8 +53,8 @@ pipeline {
                   echo experimentYaml.conditions.value.toString()
                   echo "Group?" 
                   echo groupBool.toString()
-                  echo experimentYaml.conditions.length.toString()
-                  if(!(groupBool && experimentYaml.conditions.length == 1)) {
+                  echo experimentYaml.conditions.size().toString()
+                  if(!(groupBool && experimentYaml.conditions.size() == 1)) {
                     if(experimentYaml.conditions[-1].value.percentage){
                       echo experimentYaml.conditions[-1].value.percentage.toString()
                       canaryPhase = "percentageDeploy"
