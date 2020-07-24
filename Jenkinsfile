@@ -26,6 +26,7 @@ pipeline {
       steps {
         checkout scm
         script{
+          //Start of check if canary deploy shared library
           //Check if latest commit is an experiment + is labeled for canary deployment
           changedFile = sh (script:"git diff-tree --no-commit-id --name-only -r ${env.GIT_COMMIT}", returnStdout: true)
           echo(changedFile)
@@ -37,7 +38,9 @@ pipeline {
             if(experimentYaml.labels)
             {
               canaryBool = experimentYaml.labels.contains("Canary-deploy")
+            //End of check for canary deploy shared library
               if(canaryBool){
+                //Start of check for deployment phase shared library
                 //If it is labeled for a canary deployment, figure out which deployment phase we're in
                 if(experimentYaml.conditions){
                   groupBool = false
@@ -60,6 +63,7 @@ pipeline {
                   canaryPhase = "fullyFalse"
                 }
                 echo "$canaryPhase"
+                //End of deployment phase shared library
               }
               else{
                echo "No canary!" 
