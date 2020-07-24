@@ -49,12 +49,10 @@ pipeline {
                     }
                   }
                   echo experimentYaml.conditions.value.toString()
-                  if(!experimentYaml.conditions.value){
                     if(experimentYaml.conditions.value.percentage){
                       echo experimentYaml.conditions.value.percentage.toString()
                       canaryPhase = "percentageDeploy"
                     }
-                  }
                 }
                 //If there are no additional conditions in the ruleset, check if flag is fully on or fully off
                 else{
