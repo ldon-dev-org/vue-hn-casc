@@ -7,9 +7,6 @@ pipeline {
     //skipDefaultCheckout true
     preserveStashes(buildCount: 10)
   }
-  environment {
-
-  }
   stages('FF Scale Up')
   {
     stage('Pre-scale'){
@@ -20,15 +17,15 @@ pipeline {
         }
       }
       steps {
-        checkout scm
+        echo "${env.currentPhase}"
         script{
-
+          sh "ls"
         }
       }
     }
     stage('Scale Up'){
       steps {
-        testsPass = automatedTestCall()
+        echo "Scaling up!"
       }
     }
   }

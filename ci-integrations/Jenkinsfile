@@ -91,7 +91,7 @@ pipeline {
       }
       steps {
         echo "${currentPhase}"
-        build job: 'FF-helper/job/FF-scale-up', parameters: [string(name:'currentPhase', value:"${currentPhase}")], wait: true
+        build job: 'FF-helper/FF-scale-up', parameters: [string(name:'currentPhase', value:"${currentPhase}")], wait: true
       }
     }
     stage('Canary scale down'){
@@ -102,7 +102,7 @@ pipeline {
         script{
           if(currentPhase!="fullyFalse" || currentPhase!="killSwitch"){
             echo "${currentPhase}"
-            build job: 'FF-helper/job/FF-scale-down', parameters: [string(name:'currentPhase', value:"${currentPhase}")], wait: true
+            build job: 'FF-helper/FF-scale-down', parameters: [string(name:'currentPhase', value:"${currentPhase}")], wait: true
           }
         }
       }
