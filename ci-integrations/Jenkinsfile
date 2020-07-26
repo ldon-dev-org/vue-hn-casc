@@ -80,7 +80,9 @@ pipeline {
     stage('Automated Testing Kickoff'){
       steps {
         //testsPass = automatedTestCall()
-        testsPass = true
+        script{
+          testsPass = true
+        }
       }
     }
     stage('Canary scale up'){
@@ -97,9 +99,11 @@ pipeline {
         expression { testsPass == false }
       }
       steps {
-        if(currentPhase!="fullyFalse" || currentPhase!="killSwitch"){
-          echo "${currentPhase}"
-          build job: 'FF-helper/job/FF-scale-down', parameters: [string(name:'currentPhase', value:"${currentPhase}")], wait: true
+        script{
+          if(currentPhase!="fullyFalse" || currentPhase!="killSwitch"){
+            echo "${currentPhase}"
+            build job: 'FF-helper/job/FF-scale-down', parameters: [string(name:'currentPhase', value:"${currentPhase}")], wait: true
+          }
         }
       }
     }
