@@ -3,5 +3,5 @@ type: experiment
 name: score
 flag: default.score
 value:
-  - percentage: 20
+  - percentage: 10
     option: true
