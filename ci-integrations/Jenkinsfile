@@ -12,7 +12,9 @@ pipeline {
     //1. Flag completely off
     //2. Flag turned on for internal testing
     //3. Flag turned on for internal testing + % subset of end users
-    canaryPhase = "fullyFalse"
+    canaryPhases = ["killSwitch", "fullyFalse", "internalTesting", "percentageDeploy"]
+    currentPhase = "fullyFalse"
+    testsPass = false
   }
   stages('Automatic Canary Deployment')
   {
@@ -48,21 +50,21 @@ pipeline {
                     groupBool = true
                     targetGroupBool = experimentYaml.conditions.group.name.contains("Internal-Testing")
                     if(targetGroupBool){
-                      canaryPhase = "internalTesting"
+                      currentPhase = "internalTesting"
                     }
                   }
                   if(!(groupBool && experimentYaml.conditions.size() == 1)) {
                     if(experimentYaml.conditions[-1].value.percentage){
                       echo experimentYaml.conditions[-1].value.percentage.toString()
-                      canaryPhase = "percentageDeploy"
+                      currentPhase = "percentageDeploy"
                     }
                   }
                 }
                 //If there are no additional conditions in the ruleset, check if flag is fully on or fully off
                 else{
-                  canaryPhase = "fullyFalse"
+                  currentPhase = "fullyFalse"
                 }
-                echo "$canaryPhase"
+                echo "$currentPhase"
                 //End of deployment phase shared library
               }
               else{
@@ -78,17 +80,25 @@ pipeline {
     }
     stage('Automated Testing Kickoff'){
       steps {
-        echo("Hello 2")
+        testsPass = automatedTestCall()
       }
     }
     stage('Canary scale up'){
+      when{
+        expression { testsPass == true }
+      }
       steps {
-        echo("Hello 3")
+        scaleUpHelper(currentPhase)
       }
     }
     stage('Canary scale down'){
+      when{
+        expression { testsPass == false }
+      }
       steps {
-        echo("Hello 4")
+        if(currentPhase!="fullyFalse" || currentPhase!="killSwitch"){
+          scaleDownHelper(currentPhase)
+        }
       }
     }
   }
