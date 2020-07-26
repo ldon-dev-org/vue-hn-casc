@@ -8,13 +8,7 @@ pipeline {
     preserveStashes(buildCount: 10)
   }
   environment {
-    //Possible canary deploy phases:
-    //1. Flag completely off
-    //2. Flag turned on for internal testing
-    //3. Flag turned on for internal testing + % subset of end users
-    canaryPhases = ["killSwitch", "fullyFalse", "internalTesting", "percentageDeploy"]
-    currentPhase = "fullyFalse"
-    testsPass = false
+
   }
   stages('FF Scale Up')
   {

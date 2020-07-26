@@ -12,7 +12,6 @@ pipeline {
     //1. Flag completely off
     //2. Flag turned on for internal testing
     //3. Flag turned on for internal testing + % subset of end users
-    canaryPhases = ["killSwitch", "fullyFalse", "internalTesting", "percentageDeploy"]
     currentPhase = "fullyFalse"
     testsPass = false
   }
@@ -80,7 +79,8 @@ pipeline {
     }
     stage('Automated Testing Kickoff'){
       steps {
-        testsPass = automatedTestCall()
+        //testsPass = automatedTestCall()
+        testsPass = true
       }
     }
     stage('Canary scale up'){
@@ -88,7 +88,8 @@ pipeline {
         expression { testsPass == true }
       }
       steps {
-        scaleUpHelper(currentPhase)
+        echo "${currentPhase}"
+        build job: 'FF-helper/job/FF-scale-up', parameters: [string(name:'currentPhase', value:"${currentPhase}")], wait: true
       }
     }
     stage('Canary scale down'){
@@ -97,7 +98,8 @@ pipeline {
       }
       steps {
         if(currentPhase!="fullyFalse" || currentPhase!="killSwitch"){
-          scaleDownHelper(currentPhase)
+          echo "${currentPhase}"
+          build job: 'FF-helper/job/FF-scale-down', parameters: [string(name:'currentPhase', value:"${currentPhase}")], wait: true
         }
       }
     }
