@@ -2,5 +2,6 @@
 type: experiment
 name: test flag ga
 labels: Canary-deploy
+enabled: false
 flag: default.testFlag_GA
 value: false
