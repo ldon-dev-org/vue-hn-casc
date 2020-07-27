@@ -46,8 +46,10 @@ pipeline {
         expression { currentPhase != "notCanary"}
       }
       steps {
-        testsPass = autoTesting()
-        echo testsPass.toString()
+        script{
+          testsPass = autoTesting()
+          echo testsPass.toString()
+        }
       }
     }
     stage('Canary scale up'){
