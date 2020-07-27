@@ -2,4 +2,7 @@
 type: experiment
 name: db name
 flag: default.dbName
-availableValues: []
+availableValues:
+  - DB_TWO
+  - HN_ONE
+value: DB_TWO
