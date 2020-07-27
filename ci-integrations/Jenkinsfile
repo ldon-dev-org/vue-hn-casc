@@ -15,7 +15,6 @@ pipeline {
     currentPhase = "fullyFalse"
     flagName = ""
     testsPass = false
-    experimentYaml = ""
   }
   stages('Automatic Canary Deployment')
   {
@@ -30,7 +29,6 @@ pipeline {
         checkout scm
         script{
           //Start of check if canary deploy shared library
-          //env.experimentYaml = readYaml (text: "")
           currentInfo = ffCheckCanary()
           flagName = currentInfo[0]
           currentPhase = currentInfo[1]
@@ -54,7 +52,6 @@ pipeline {
       steps {
         script{
           testsPass = autoTesting()
-          echo testsPass.toString()
         }
       }
     }

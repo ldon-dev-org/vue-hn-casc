@@ -33,11 +33,25 @@ pipeline {
                 --url https://x-api.rollout.io/public-api/applications/${ffAppID}/Production/experiments/${env.flagName} \
                 --header 'authorization: Bearer ${ffToken}' \
                 --header 'content-type: application/json' \
+                --data '[{"op":"remove","path":"/labels"}]'
+            """
+            sh """
+              curl --request PATCH \
+                --url https://x-api.rollout.io/public-api/applications/${ffAppID}/Production/experiments/${env.flagName} \
+                --header 'authorization: Bearer ${ffToken}' \
+                --header 'content-type: application/json' \
                 --data '[{"op":"add","path":"/conditions","value":[{"group":{"name":"Internal-Testing"},"value":true}]}]'
             """
           }
           //If internal testing only, scale up to initial percentage deploy
           else if(env.currentPhase == "internalTesting"){
+            sh """
+              curl --request PATCH \
+                --url https://x-api.rollout.io/public-api/applications/${ffAppID}/Production/experiments/${env.flagName} \
+                --header 'authorization: Bearer ${ffToken}' \
+                --header 'content-type: application/json' \
+                --data '[{"op":"remove","path":"/labels"}]'
+            """
             sh """
               curl --request PATCH \
                 --url https://x-api.rollout.io/public-api/applications/${ffAppID}/Production/experiments/${env.flagName} \
@@ -73,6 +87,12 @@ pipeline {
             else if(currentPercentage < 100){
               scaledUpPercentage = 100
             }
+            sh """
+              curl --request PATCH \
+                --url https://x-api.rollout.io/public-api/applications/${ffAppID}/Production/experiments/${env.flagName} \
+                --header 'authorization: Bearer ${ffToken}' \
+                --header 'content-type: application/json' \
+            """
             sh """
               curl --request PATCH \
                 --url https://x-api.rollout.io/public-api/applications/${ffAppID}/Production/experiments/${env.flagName} \
