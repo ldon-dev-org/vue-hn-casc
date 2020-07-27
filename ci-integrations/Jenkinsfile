@@ -30,8 +30,9 @@ pipeline {
         checkout scm
         script{
           //Start of check if canary deploy shared library
-          canaryBool = ffCheckCanary()
-          echo "${canaryBool}"
+          //env.experimentYaml = readYaml (text: "")
+          currentPhase = ffCheckCanary()
+          echo "currentPhase"
           //Check if latest commit is an experiment + is labeled for canary deployment
           // changedFile = sh (script:"git diff-tree --no-commit-id --name-only -r ${env.GIT_COMMIT}", returnStdout: true)
           // echo(changedFile)
@@ -45,32 +46,32 @@ pipeline {
           //   {
           //     canaryBool = experimentYaml.labels.contains("Canary-deploy")
             //End of check for canary deploy shared library
-              if(canaryBool){
-                //Start of check for deployment phase shared library
-                //If it is labeled for a canary deployment, figure out which deployment phase we're in
-                if(env.experimentYaml.conditions){
-                  groupBool = false
-                  if(experimentYaml.conditions.group.name){
-                    groupBool = true
-                    targetGroupBool = experimentYaml.conditions.group.name.contains("Internal-Testing")
-                    if(targetGroupBool){
-                      currentPhase = "internalTesting"
-                    }
-                  }
-                  if(!(groupBool && experimentYaml.conditions.size() == 1)) {
-                    if(experimentYaml.conditions[-1].value.percentage){
-                      echo experimentYaml.conditions[-1].value.percentage.toString()
-                      currentPhase = "percentageDeploy"
-                    }
-                  }
-                }
-                //If there are no additional conditions in the ruleset, check if flag is fully on or fully off
-                else{
-                  currentPhase = "fullyFalse"
-                }
-                echo "$currentPhase"
-                //End of deployment phase shared library
-              }
+              // if(canaryBool){
+              //   //Start of check for deployment phase shared library
+              //   //If it is labeled for a canary deployment, figure out which deployment phase we're in
+              //   if(env.experimentYaml.conditions){
+              //     groupBool = false
+              //     if(experimentYaml.conditions.group.name){
+              //       groupBool = true
+              //       targetGroupBool = experimentYaml.conditions.group.name.contains("Internal-Testing")
+              //       if(targetGroupBool){
+              //         currentPhase = "internalTesting"
+              //       }
+              //     }
+              //     if(!(groupBool && experimentYaml.conditions.size() == 1)) {
+              //       if(experimentYaml.conditions[-1].value.percentage){
+              //         echo experimentYaml.conditions[-1].value.percentage.toString()
+              //         currentPhase = "percentageDeploy"
+              //       }
+              //     }
+              //   }
+              //   //If there are no additional conditions in the ruleset, check if flag is fully on or fully off
+              //   else{
+              //     currentPhase = "fullyFalse"
+              //   }
+              //   echo "$currentPhase"
+              //   //End of deployment phase shared library
+              // }
               // else{
               //  echo "No canary!" 
               // }
