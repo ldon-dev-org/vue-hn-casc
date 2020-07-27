@@ -77,8 +77,8 @@ pipeline {
           // else{
           //  echo "Updated a not experiment!" 
           // }
-        }
-      }
+      //   }
+      // }
     }
     stage('Automated Testing Kickoff'){
       steps {
