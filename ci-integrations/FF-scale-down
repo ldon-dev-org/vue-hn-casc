@@ -7,12 +7,13 @@ pipeline {
     //skipDefaultCheckout true
     preserveStashes(buildCount: 10)
   }
-  environment {
-
+  environment{
+    ffAppID = "5d7122254a1eb32ee562ed03"
+    ffToken = "de7eb156-cf60-4432-8ec0-d7f50d8a09aa"
   }
   stages('FF Scale Down')
   {
-    stage('Pre-scale'){
+    stage('Scale down'){
        agent {
         kubernetes {
           label 'nodejs'
@@ -20,15 +21,42 @@ pipeline {
         }
       }
       steps {
-        checkout scm
+        //Possible phase values: internalTesting, percentageDeploy, or killSwitch
+        echo "${env.currentPhase}"
         script{
-
+          //If killSwitch, call the killSwitch!
+          if(env.currentPhase == "killSwitch"){
+            //Will need to parametirize the environment part of the url
+            //Also need to make this a withCredentials
+            sh """
+              curl --request PATCH \
+                --url https://x-api.rollout.io/public-api/applications/${ffAppID}/Production/experiments/${env.flagName} \
+                --header 'authorization: Bearer ${ffToken}' \
+                --header 'content-type: application/json' \
+                --data '[{"op":"replace","path":"/enabled","value":false}]'
+            """
+          }
+          //If internal testing only, scale down to fully false
+          else if(env.currentPhase == "internalTesting"){
+            sh """
+              curl --request PATCH \
+                --url https://x-api.rollout.io/public-api/applications/${ffAppID}/Production/experiments/${env.flagName} \
+                --header 'authorization: Bearer ${ffToken}' \
+                --header 'content-type: application/json' \
+                --data '[{"op":"remove","path":"/conditions"}]'
+              """
+          }
+          //If percentage deploy, scale down to internal testing only
+          else if(env.currentPhase == "percentageDeploy"){
+            sh """
+              curl --request PATCH \
+                --url https://x-api.rollout.io/public-api/applications/${ffAppID}/Production/experiments/${env.flagName} \
+                --header 'authorization: Bearer ${ffToken}' \
+                --header 'content-type: application/json' \
+                --data '[{"op":"replace","path":"/conditions","value":[{"group":{"name":"Internal-Testing"},"value":true}]}]'
+              """
+          }
         }
-      }
-    }
-    stage('Scale Down'){
-      steps {
-        testsPass = automatedTestCall()
       }
     }
   }
