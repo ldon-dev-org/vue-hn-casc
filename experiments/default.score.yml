@@ -3,8 +3,8 @@ type: experiment
 name: score
 flag: default.score
 conditions:
-  - group:
-      name: Internal-Testing
+  - dependency:
+      flag: default.articleDisplay
+      value: 'true'
     value: true
-  - value: true
 value: false
