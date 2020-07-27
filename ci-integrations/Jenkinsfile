@@ -20,7 +20,7 @@ pipeline {
   stages('Automatic Canary Deployment')
   {
     stage('Deployment Phase Check'){
-       agent {
+      agent {
         kubernetes {
           label 'nodejs'
           yaml testPodYaml
@@ -44,6 +44,12 @@ pipeline {
     stage('Automated Testing Kickoff'){
       when{
         expression { currentPhase != "notCanary"}
+      }
+      agent {
+        kubernetes {
+          label 'nodejs'
+          yaml testPodYaml
+        }
       }
       steps {
         script{
