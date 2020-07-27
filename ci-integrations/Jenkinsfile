@@ -83,7 +83,8 @@ pipeline {
       steps {
         //testsPass = automatedTestCall()
         script{
-          testsPass = true
+          //testsPass = true
+          testsPass = false
         }
       }
     }
