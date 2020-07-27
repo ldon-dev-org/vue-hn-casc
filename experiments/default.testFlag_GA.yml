@@ -3,7 +3,5 @@ type: experiment
 name: test flag ga
 flag: default.testFlag_GA
 conditions:
-  - value:
-      - percentage: 5
-        option: true
+  - value: true
 value: false
