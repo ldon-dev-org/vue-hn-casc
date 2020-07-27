@@ -8,6 +8,6 @@ conditions:
       name: Internal-Testing
     value: true
   - value:
-      - percentage: 5
+      - percentage: 10
         option: true
 value: false
