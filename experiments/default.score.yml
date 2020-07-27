@@ -1,7 +1,6 @@
 # This file was edited by Cloudbees Feature Flags
 type: experiment
 name: score
-labels: archived
 flag: default.score
 conditions:
   - group:
