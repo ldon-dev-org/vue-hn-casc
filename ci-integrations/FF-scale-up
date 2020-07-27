@@ -46,9 +46,17 @@ pipeline {
                 --data '[{"op":"replace","path":"/conditions","value":[{"group":{"name":"Internal-Testing"},"value":true},{"value":[{"percentage":5,"option":true}]}]}]'
               """
           }
-          //If percentage deploy, scale up to higher percentagee deploy
+          //If percentage deploy, scale up to higher percentage deploy
           else if(env.currentPhase == "percentageDeploy"){
-            echo "percentageDeploy"
+            //Should create a shared library call to get current percentage value
+            currentExperimentString = sh (script:"""
+              curl --request GET \
+                --url https://x-api.rollout.io/public-api/applications/${ffAppID}/Production/experiments/${env.flagName} \
+                --header 'accept: application/json' \
+                --header 'authorization: Bearer ${ffToken}'
+              """, returnStdout: true)
+            experimentJson = readJSON text: currentExperimentJson
+            echo experimentJson.conditions.value.percentage.toString()
           }
         }
       }
