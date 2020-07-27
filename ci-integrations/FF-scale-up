@@ -35,11 +35,11 @@ pipeline {
           }
           //If internal testing only, scale up to initial percentage deploy
           else if(env.currentPhase == "internalTesting"){
-
+            echo "internalTesting"
           }
           //If percentage deploy, scale up to higher percentagee deploy
-          else if(){
-
+          else if(env.currentPhase == "percentageDeploy"){
+            echo "percentageDeploy"
           }
         }
       }
