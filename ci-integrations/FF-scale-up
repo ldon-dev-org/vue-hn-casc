@@ -55,7 +55,7 @@ pipeline {
                 --header 'accept: application/json' \
                 --header 'authorization: Bearer ${ffToken}'
               """, returnStdout: true)
-            experimentJson = readJSON text: currentExperimentJson
+            experimentJson = readJSON text: currentExperimentString
             echo experimentJson.conditions.value.percentage.toString()
           }
         }
