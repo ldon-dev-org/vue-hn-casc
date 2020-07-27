@@ -13,6 +13,7 @@ pipeline {
     //2. Flag turned on for internal testing
     //3. Flag turned on for internal testing + % subset of end users
     currentPhase = "fullyFalse"
+    flagName = ""
     testsPass = false
   }
   stages('Automatic Canary Deployment')
@@ -36,6 +37,7 @@ pipeline {
             experimentText = sh (script:"cat ${changedFile}", returnStdout: true)
            sh "cat ${changedFile}"
             experimentYaml = readYaml (text: "$experimentText")
+            flagName = experimentYaml.flag
             if(experimentYaml.labels)
             {
               canaryBool = experimentYaml.labels.contains("Canary-deploy")
@@ -91,7 +93,7 @@ pipeline {
       }
       steps {
         echo "${currentPhase}"
-        build job: 'FF-helper/FF-scale-up', parameters: [string(name:'currentPhase', value:"${currentPhase}")], wait: true
+        build job: 'FF-helper/FF-scale-up', parameters: [string(name:'currentPhase', value:"${currentPhase}"), string(name:'flagName', value:"${flagName}")], wait: true
       }
     }
     stage('Canary scale down'){
@@ -102,7 +104,7 @@ pipeline {
         script{
           if(currentPhase!="fullyFalse" || currentPhase!="killSwitch"){
             echo "${currentPhase}"
-            build job: 'FF-helper/FF-scale-down', parameters: [string(name:'currentPhase', value:"${currentPhase}")], wait: true
+            build job: 'FF-helper/FF-scale-down', parameters: [string(name:'currentPhase', value:"${currentPhase}"), string(name:'flagName', value:"${flagName}")], wait: true
           }
         }
       }

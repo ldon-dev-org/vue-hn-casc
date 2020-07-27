@@ -8,7 +8,8 @@ pipeline {
     preserveStashes(buildCount: 10)
   }
   environment{
-    ffApi = "5d7122254a1eb32ee562ed03"
+    ffAppID = "5d7122254a1eb32ee562ed03"
+    ffToken = "de7eb156-cf60-4432-8ec0-d7f50d8a09aa"
   }
   stages('FF Scale Up')
   {
@@ -27,8 +28,8 @@ pipeline {
           if(env.currentPhase == "fullyFalse"){
             sh """
             curl --request PATCH \
-              --url https://x-api.rollout.io/public-api/applications/5d7122254a1eb32ee562ed03/Production/experiments/default.testFlag_GA \
-              --header 'authorization: Bearer de7eb156-cf60-4432-8ec0-d7f50d8a09aa' \
+              --url https://x-api.rollout.io/public-api/applications/${ffAppID}/Production/experiments/${env.flagName} \
+              --header 'authorization: Bearer ${ffToken}' \
               --header 'content-type: application/json' \
               --data '[{"op":"add","path":"/conditions","value":[{"group":{"name":"Internal-Testing"},"value":true}]}]'
             """
