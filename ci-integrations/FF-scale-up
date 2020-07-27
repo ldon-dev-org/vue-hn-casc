@@ -56,7 +56,30 @@ pipeline {
                 --header 'authorization: Bearer ${ffToken}'
               """, returnStdout: true)
             experimentJson = readJSON text: currentExperimentString
-            echo experimentJson.conditions.value.percentage.toString()
+            currentPercentage = experimentJson.conditions[-1].value.percentage.toInteger()
+            scaledUpPercentage = 0
+            if(currentPercentage < 5){
+              scaledUpPercentage = 5
+            }
+            else if(currentPercentage < 10){
+              scaledUpPercentage = 10
+            }
+            else if(currentPercentage < 25){
+              scaledUpPercentage = 25
+            }
+            else if(currentPercentage < 50){
+              scaledUpPercentage = 50
+            }
+            else if(currentPercentage < 100){
+              scaledUpPercentage = 100
+            }
+            sh """
+              curl --request PATCH \
+                --url https://x-api.rollout.io/public-api/applications/${ffAppID}/Production/experiments/${env.flagName} \
+                --header 'authorization: Bearer ${ffToken}' \
+                --header 'content-type: application/json' \
+                --data '[{"op":"replace","path":"/conditions","value":[{"group":{"name":"Internal-Testing"},"value":true},{"value":[{"percentage":${scaledUpPercentage},"option":true}]}]}]'
+              """
           }
         }
       }
