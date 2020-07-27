@@ -9,7 +9,4 @@ conditions:
   - group:
       name: Internal-Testing
     value: true
-  - value:
-      - percentage: 5
-        option: true
 value: false
