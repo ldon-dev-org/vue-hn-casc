@@ -3,8 +3,4 @@ type: experiment
 name: test flag ga
 labels: Canary-deploy
 flag: default.testFlag_GA
-conditions:
-  - group:
-      name: Internal-Testing
-    value: true
-value: true
+value: false
