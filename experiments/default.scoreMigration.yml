@@ -4,7 +4,7 @@ name: score migration
 labels: Canary-deploy
 flag: default.scoreMigration
 conditions:
-  - value:
-      - percentage: 5
-        option: true
+  - group:
+      name: Internal-Testing
+    value: true
 value: false
