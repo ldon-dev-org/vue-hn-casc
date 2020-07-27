@@ -13,7 +13,7 @@ pipeline {
   }
   stages('FF Scale Up')
   {
-    stage('Pre-scale'){
+    stage('Scale up'){
        agent {
         kubernetes {
           label 'nodejs'
@@ -26,28 +26,31 @@ pipeline {
         script{
           //If fully false, scale up to internal testing
           if(env.currentPhase == "fullyFalse"){
+            //Will need to parametirize the environment part of the url
+            //Also need to make this a withCredentials
             sh """
-            curl --request PATCH \
-              --url https://x-api.rollout.io/public-api/applications/${ffAppID}/Production/experiments/${env.flagName} \
-              --header 'authorization: Bearer ${ffToken}' \
-              --header 'content-type: application/json' \
-              --data '[{"op":"add","path":"/conditions","value":[{"group":{"name":"Internal-Testing"},"value":true}]}]'
+              curl --request PATCH \
+                --url https://x-api.rollout.io/public-api/applications/${ffAppID}/Production/experiments/${env.flagName} \
+                --header 'authorization: Bearer ${ffToken}' \
+                --header 'content-type: application/json' \
+                --data '[{"op":"add","path":"/conditions","value":[{"group":{"name":"Internal-Testing"},"value":true}]}]'
             """
           }
           //If internal testing only, scale up to initial percentage deploy
           else if(env.currentPhase == "internalTesting"){
-            echo "internalTesting"
+            sh """
+              curl --request PATCH \
+                --url https://x-api.rollout.io/public-api/applications/${ffAppID}/Production/experiments/${env.flagName} \
+                --header 'authorization: Bearer ${ffToken}' \
+                --header 'content-type: application/json' \
+                --data '[{"op":"replace","path":"/conditions","value":[{"group":{"name":"Internal-Testing"},"value":true},{"value":[{"percentage":5,"option":true}]}]}]'
+              """
           }
           //If percentage deploy, scale up to higher percentagee deploy
           else if(env.currentPhase == "percentageDeploy"){
             echo "percentageDeploy"
           }
         }
-      }
-    }
-    stage('Scale Up'){
-      steps {
-        echo "Scaling up!"
       }
     }
   }
