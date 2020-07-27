@@ -7,6 +7,9 @@ pipeline {
     //skipDefaultCheckout true
     preserveStashes(buildCount: 10)
   }
+  environment{
+    ffApi = "5d7122254a1eb32ee562ed03"
+  }
   stages('FF Scale Up')
   {
     stage('Pre-scale'){
@@ -17,9 +20,27 @@ pipeline {
         }
       }
       steps {
+        //Possible phase values: fullyFalse, internalTesting, percentageDeploy
         echo "${env.currentPhase}"
         script{
-          sh "ls"
+          //If fully false, scale up to internal testing
+          if(env.currentPhase == "fullyFalse"){
+            sh """
+            curl --request PATCH \
+              --url https://x-api.rollout.io/public-api/applications/5d7122254a1eb32ee562ed03/Production/experiments/default.testFlag_GA \
+              --header 'authorization: Bearer de7eb156-cf60-4432-8ec0-d7f50d8a09aa' \
+              --header 'content-type: application/json' \
+              --data '[{"op":"add","path":"/conditions","value":[{"group":{"name":"Internal-Testing"},"value":true}]}]'
+            """
+          }
+          //If internal testing only, scale up to initial percentage deploy
+          else if(env.currentPhase == "internalTesting"){
+
+          }
+          //If percentage deploy, scale up to higher percentagee deploy
+          else if(){
+
+          }
         }
       }
     }
