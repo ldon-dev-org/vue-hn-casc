@@ -74,9 +74,9 @@ pipeline {
               // }
             }
           }
-          else{
-           echo "Updated a not experiment!" 
-          }
+          // else{
+          //  echo "Updated a not experiment!" 
+          // }
         }
       }
     }
