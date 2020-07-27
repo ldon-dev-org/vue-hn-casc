@@ -7,7 +7,4 @@ conditions:
   - group:
       name: Internal-Testing
     value: true
-  - value:
-      - percentage: 10
-        option: true
 value: false
