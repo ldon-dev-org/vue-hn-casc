@@ -29,18 +29,19 @@ pipeline {
         checkout scm
         script{
           //Start of check if canary deploy shared library
+          canaryBool = ffCheckCanary()
           //Check if latest commit is an experiment + is labeled for canary deployment
-          changedFile = sh (script:"git diff-tree --no-commit-id --name-only -r ${env.GIT_COMMIT}", returnStdout: true)
-          echo(changedFile)
-          experimentFile = changedFile.contains("experiments/")
-          if(experimentFile){
-            experimentText = sh (script:"cat ${changedFile}", returnStdout: true)
-           sh "cat ${changedFile}"
-            experimentYaml = readYaml (text: "$experimentText")
-            flagName = experimentYaml.flag
-            if(experimentYaml.labels)
-            {
-              canaryBool = experimentYaml.labels.contains("Canary-deploy")
+          // changedFile = sh (script:"git diff-tree --no-commit-id --name-only -r ${env.GIT_COMMIT}", returnStdout: true)
+          // echo(changedFile)
+          // experimentFile = changedFile.contains("experiments/")
+          // if(experimentFile){
+          //   experimentText = sh (script:"cat ${changedFile}", returnStdout: true)
+          //  sh "cat ${changedFile}"
+          //   experimentYaml = readYaml (text: "$experimentText")
+          //   flagName = experimentYaml.flag
+          //   if(experimentYaml.labels)
+          //   {
+          //     canaryBool = experimentYaml.labels.contains("Canary-deploy")
             //End of check for canary deploy shared library
               if(canaryBool){
                 //Start of check for deployment phase shared library
