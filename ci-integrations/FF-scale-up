@@ -56,7 +56,7 @@ pipeline {
                 --header 'authorization: Bearer ${ffToken}'
               """, returnStdout: true)
             experimentJson = readJSON text: currentExperimentString
-            currentPercentage = experimentJson.conditions[-1].value.percentage.toInteger()
+            currentPercentage = experimentJson.conditions[-1].value.percentage[0]
             scaledUpPercentage = 0
             if(currentPercentage < 5){
               scaledUpPercentage = 5
