@@ -1,9 +1,7 @@
 # This file was edited by Cloudbees Feature Flags
 type: experiment
 name: score migration
-labels:
-  - Canary-deploy
-  - backward-compatible-configuration
+labels: Canary-deploy
 flag: default.scoreMigration
 conditions:
   - group:
