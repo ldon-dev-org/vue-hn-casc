@@ -3,5 +3,10 @@ type: experiment
 name: test flag ga
 flag: default.testFlag_GA
 conditions:
-  - value: true
+  - property:
+      name: userID
+      operator: in-array
+      operand:
+        - '1'
+    value: true
 value: false
