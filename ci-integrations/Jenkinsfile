@@ -31,8 +31,13 @@ pipeline {
         script{
           //Start of check if canary deploy shared library
           //env.experimentYaml = readYaml (text: "")
-          currentPhase = ffCheckCanary()
+          currentInfo = ffCheckCanary()
+          flagName = currentInfo[0]
+          currentPhase = currentInfo[1]
           echo "currentPhase"
+          if(currentPhase == "notCanary"){
+            echo "Not a canary deployment!"
+          }
           //Check if latest commit is an experiment + is labeled for canary deployment
           // changedFile = sh (script:"git diff-tree --no-commit-id --name-only -r ${env.GIT_COMMIT}", returnStdout: true)
           // echo(changedFile)
@@ -84,17 +89,20 @@ pipeline {
       // }
     }
     stage('Automated Testing Kickoff'){
+      when{
+        expression { currentPhase != "notCanary"}
+      }
       steps {
         //testsPass = automatedTestCall()
         script{
-          //testsPass = true
-          testsPass = false
+          testsPass = true
+          //testsPass = false
         }
       }
     }
     stage('Canary scale up'){
       when{
-        expression { testsPass == true }
+        expression { testsPass == true && currentPhase != "notCanary"}
       }
       steps {
         echo "${currentPhase}"
@@ -103,7 +111,7 @@ pipeline {
     }
     stage('Canary scale down'){
       when{
-        expression { testsPass == false }
+        expression { testsPass == false && currentPhase != "notCanary"}
       }
       steps {
         script{
