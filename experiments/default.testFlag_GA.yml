@@ -1,4 +1,4 @@
-# This file was edited by Logan
+# This file was edited by Cloudbees Feature Flags
 type: experiment
 name: test flag ga
 flag: default.testFlag_GA
@@ -6,4 +6,4 @@ conditions:
   - group:
       name: Beta User
     value: true
-value: false
+value: true
