@@ -1,4 +1,4 @@
-# This file was edited by Cloudbees Feature Flags
+# This file was edited by Logan
 type: experiment
 name: test flag ga
 flag: default.testFlag_GA
